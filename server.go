@@ -1,12 +1,14 @@
 package main
 
 import (
-	pb "./helloworld"
+	"net"
+	"fmt"
+
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
-	"net"
-	"fmt"
+
+	pb "./helloworld"
 )
 const (
 	grpcPort = ":50051"
@@ -25,9 +27,8 @@ func main() {
 		return
 	}
 	grpcServer := grpc.NewServer()
-	pb.RegisterHelloworldServer(grpcServer, &Server{})
+	pb.RegisterGreetingServer(grpcServer, &Server{})
 	reflection.Register(grpcServer)
 	grpcServer.Serve(listen)
-
 
 }

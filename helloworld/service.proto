@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package helloworld;
 
-service helloworld{
+service Greeting{
     rpc SayHello (HelloRequest) returns (HelloResponse){}
 }
 
