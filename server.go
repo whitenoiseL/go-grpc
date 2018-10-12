@@ -1,26 +1,27 @@
 package main
 
 import (
-	"net"
 	"fmt"
-
 	"golang.org/x/net/context"
+	pb "./helloworld"
+	"net"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
-
-	pb "./helloworld"
-)
+	"github.com/go-redis/redis"
+		)
 const (
 	grpcPort = ":50051"
 )
 
 type Server struct{}
+var client *redis.Client
 
 func (s *Server) SayHello(context context.Context, in *pb.HelloRequest) (*pb.HelloResponse, error){
+	operation()
 	return &pb.HelloResponse{Response: "Hello " + in.Request}, nil
 }
 
-func main() {
+func grpc_start(){
 	listen, err := net.Listen("tcp", grpcPort)
 	if err != nil {
 		fmt.Printf("failed to listen: %v\n", err)
@@ -30,5 +31,36 @@ func main() {
 	pb.RegisterGreetingServer(grpcServer, &Server{})
 	reflection.Register(grpcServer)
 	grpcServer.Serve(listen)
+}
+
+func redis_start() (*redis.Client, error){
+	client = redis.NewClient(&redis.Options{
+		Addr:     "localhost:6379",
+		Password: "", // no password set
+		DB:       0,  // use default DB
+	})
+
+	pong, err := client.Ping().Result()
+	fmt.Println(pong, err)
+	return client,nil
+	// Output: PONG <nil>
+}
+
+func operation() {
+	err := client.Set("key", "value1", 0).Err()
+	if err != nil {
+		panic(err)
+	}
+
+	// Output: key value
+	// key2 does not exist
+}
+
+func main() {
+	go grpc_start()
+	go redis_start()
+	c := make(chan int)
+	fmt.Println("grpc service started...")
+	c <- 0
 
 }
