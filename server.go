@@ -3,12 +3,13 @@ package main
 import (
 	"fmt"
 	"golang.org/x/net/context"
-	pb "./helloworld"
+	pb "github.com/go-grpc/helloworld"
 	"net"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"github.com/go-redis/redis"
-		)
+)
+
 const (
 	grpcPort = ":50051"
 )
@@ -17,7 +18,7 @@ type Server struct{}
 var client *redis.Client
 
 func (s *Server) SayHello(context context.Context, in *pb.HelloRequest) (*pb.HelloResponse, error){
-	operation()
+	//operation()
 	return &pb.HelloResponse{Response: "Hello " + in.Request}, nil
 }
 
@@ -58,7 +59,7 @@ func operation() {
 
 func main() {
 	go grpc_start()
-	go redis_start()
+	//go redis_start()
 	c := make(chan int)
 	fmt.Println("grpc service started...")
 	c <- 0

@@ -7,7 +7,7 @@ import (
 	"time"
 	"golang.org/x/net/context"
 
-	pb "./helloworld"
+	"./helloworld"
 	)
 
 const (
@@ -22,7 +22,7 @@ func main() {
 		log.Fatalf("did not connect: %v", err)
 	}
 	defer conn.Close()
-	c := pb.NewGreetingClient(conn)
+	c := helloworld.NewGreetingClient(conn)
 
 	// Contact the server and print out its response.
 	name := defaultName
@@ -31,7 +31,7 @@ func main() {
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	r, err := c.SayHello(ctx, &pb.HelloRequest{Request: name})
+	r, err := c.SayHello(ctx, &helloworld.HelloRequest{Request: name})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}

@@ -1,0 +1,8 @@
+version: '2.0'
+services:
+  go-grpc:
+    container_name: f84a521b2563
+    network_mode: bridge
+    ports:
+    - 50051:50051
+    image: go-grpc:v0
