@@ -7,7 +7,7 @@ import (
 	"time"
 	"golang.org/x/net/context"
 
-	"./helloworld"
+	"github.com/whitenoiseL/go-grpc/helloworld"
 	)
 
 const (

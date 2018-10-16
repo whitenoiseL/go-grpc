@@ -2,12 +2,14 @@ package main
 
 import (
 	"fmt"
-	"golang.org/x/net/context"
-	pb "github.com/go-grpc/helloworld"
 	"net"
+
+	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 	"github.com/go-redis/redis"
+
+	pb "github.com/whitenoiseL/go-grpc/helloworld"
 )
 
 const (
