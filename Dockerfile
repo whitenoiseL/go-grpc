@@ -4,11 +4,8 @@ RUN mkdir /go/src/app
 
 COPY . /go/src/app
 
-WORKDIR /go/src/app/pb
+WORKDIR /go/src/app/
 
-RUN go get -v ./... \
-    && cd .. \
-    && go get -d -v ./...
+RUN go get -v ./...
 
-CMD cd ../ \
-    && go run server.go
+CMD go run server.go
