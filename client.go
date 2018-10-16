@@ -10,8 +10,8 @@ import (
 )
 
 const (
-	address     = "localhost:50051"
-	hi = "world!"
+	address     = "149.28.90.228:50051"
+	hi = "world"
 )
 
 var (
@@ -22,6 +22,8 @@ var (
 	err error
 )
 
+var ch = make(chan int)
+
 func clientStart() {
 	// Set up a connection to the server.
 	conn, err = grpc.Dial(address, grpc.WithInsecure())
@@ -29,8 +31,9 @@ func clientStart() {
 		log.Fatalf("did not connect: %v", err)
 	}
 	c = helloworld.NewGreetingClient(conn)
-	ctx, cancel = context.WithTimeout(context.Background(), time.Second)
-
+	// Set time to wait
+	ctx, cancel = context.WithTimeout(context.Background(), time.Second*2)
+	<- ch
 }
 
 func sayhi() string{
@@ -41,13 +44,24 @@ func sayhi() string{
 	return r.Response
 }
 
+func closeConn(){
+	conn.Close()
+	cancel()
+}
+
 func main() {
 
-	clientStart()
-	defer conn.Close()
-	defer cancel()
+	go clientStart()
+	ch <- 0
+	//defer conn.Close()
+	//defer cancel()
 
-	re := sayhi()
+	var re string
 
-	log.Printf("Greeting: %s", re)
+	for i := 0; i<10; i++{
+		re = sayhi()
+	}
+
+	log.Print("Greeting: ", re)
+	closeConn()
 }
