@@ -5,4 +5,4 @@ services:
     network_mode: bridge
     ports:
     - 50051:50051
-    image: go-grpc:v0
+    image: bostonlobster/go-grpc:v0
