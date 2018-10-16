@@ -21,6 +21,7 @@ var client *redis.Client
 
 func (s *Server) SayHello(context context.Context, in *pb.HelloRequest) (*pb.HelloResponse, error){
 	//operation()
+	fmt.Println("GRPC testing, request recevied!")
 	return &pb.HelloResponse{Response: "Hello " + in.Request}, nil
 }
 
