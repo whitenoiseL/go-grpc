@@ -1,16 +1,17 @@
 package main
 
 import (
-	"google.golang.org/grpc"
 	"log"
 	"time"
-	"golang.org/x/net/context"
 
+	"golang.org/x/net/context"
+	"google.golang.org/grpc"
 	"github.com/whitenoiseL/go-grpc/helloworld"
 )
 
 const (
-	address     = "149.28.90.228:50051"
+	address = "localhost:50051"
+	//address = "localhost:50051"
 	hi = "world"
 )
 
@@ -36,7 +37,7 @@ func clientStart() {
 	<- ch
 }
 
-func sayhi() string{
+func sayHi() string{
 	r, err := c.SayHello(ctx, &helloworld.HelloRequest{Request:hi})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
@@ -53,13 +54,11 @@ func main() {
 
 	go clientStart()
 	ch <- 0
-	//defer conn.Close()
-	//defer cancel()
 
 	var re string
 
-	for i := 0; i<10; i++{
-		re = sayhi()
+	for i := 0; i<1; i++{
+		re = sayHi()
 	}
 
 	log.Print("Greeting: ", re)
